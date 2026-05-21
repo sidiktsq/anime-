@@ -4,98 +4,101 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
 import { Anime } from "@/types";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Star } from "lucide-react";
+import { Star, Play } from "lucide-react";
 
 interface AnimeCardProps {
   anime: Anime;
 }
 
 export function AnimeCard({ anime }: AnimeCardProps) {
-  const coverUrl = anime.images?.jpg?.image_url || anime.images?.jpg?.small_image_url;
+  // Use large image url for best quality
+  const coverUrl = anime.images?.jpg?.large_image_url || anime.images?.jpg?.image_url;
 
   return (
     <motion.div
-      whileHover={{ y: -8 }}
-      transition={{ duration: 0.2 }}
+      whileHover={{ y: -8, scale: 1.02 }}
+      transition={{ duration: 0.3, ease: "easeOut" }}
+      className="h-full"
     >
-      <div className="h-full">
-        <Link href={`/anime/${anime.mal_id}`}>
-          <div className="neo-card h-full flex flex-col overflow-hidden">
-            <div className="relative w-full h-72 border-b-4 border-black overflow-hidden bg-white">
-              {coverUrl && (
-                <Image
-                  src={coverUrl}
-                  alt={anime.title}
-                  fill
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                  className="object-cover hover:scale-110 transition-transform duration-500 ease-out"
-                />
-              )}
-              
-              {/* Type Badge Floating */}
+      <Link href={`/anime/${anime.mal_id}`} className="block h-full">
+        <div className="glass-card h-full flex flex-col rounded-2xl overflow-hidden relative group">
+          
+          {/* Image Container */}
+          <div className="relative w-full h-80 overflow-hidden bg-zinc-900">
+            {coverUrl ? (
+              <Image
+                src={coverUrl}
+                alt={anime.title}
+                fill
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                className="object-cover transition-transform duration-700 ease-out group-hover:scale-110"
+              />
+            ) : (
+              <div className="w-full h-full flex items-center justify-center text-zinc-600">
+                No Image
+              </div>
+            )}
+            
+            {/* Gradient Overlay for seamless blend */}
+            <div className="absolute inset-0 bg-gradient-to-t from-[#18181b] via-transparent to-transparent opacity-90"></div>
+
+            {/* Top Badges */}
+            <div className="absolute top-3 left-3 flex gap-2">
               {anime.type && (
-                <div className="absolute top-3 left-3 neo-badge bg-primary text-black">
+                <span className="px-2.5 py-1 text-xs font-bold bg-primary text-primary-foreground rounded-full shadow-lg">
                   {anime.type}
-                </div>
+                </span>
               )}
             </div>
 
-            <div className="p-5 flex-1 flex flex-col gap-3 bg-white">
-              <h3 className="font-black text-xl text-black line-clamp-2 leading-tight uppercase tracking-tight">
-                {anime.title}
-              </h3>
-
-              <div className="flex items-center justify-between text-sm font-bold text-black border-b-2 border-black pb-3">
-                <div className="flex items-center gap-1.5 bg-yellow-300 px-2 py-1 border-2 border-black shadow-[2px_2px_0_0_#000]">
-                  <Star size={16} fill="currentColor" />
-                  {anime.score?.toFixed(1) || "N/A"}
-                </div>
-                <span className="bg-secondary px-2 py-1 border-2 border-black shadow-[2px_2px_0_0_#000]">
-                  {anime.episodes || "??"} EPS
-                </span>
+            {/* Hover Play Button Overlay */}
+            <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+              <div className="w-14 h-14 rounded-full bg-primary/90 flex items-center justify-center shadow-lg transform scale-75 group-hover:scale-100 transition-transform duration-300">
+                <Play className="text-primary-foreground ml-1" size={24} fill="currentColor" />
               </div>
-
-              <div className="flex gap-1.5 flex-wrap">
-                {anime.status && (
-                  <span className={`px-2 py-1 text-xs font-bold uppercase tracking-wider border-2 border-black shadow-[2px_2px_0_0_#000] ${
-                    anime.status === "Finished Airing" 
-                    ? "bg-green-300 text-black" 
-                    : "bg-blue-300 text-black"
-                  }`}>
-                    {anime.status === "Finished Airing" ? "Completed" : anime.status}
-                  </span>
-                )}
-              </div>
-
-              <div className="flex gap-1.5 flex-wrap">
-                {anime.genres?.slice(0, 2).map((genre, i) => (
-                  <span
-                    key={genre.mal_id}
-                    className={`text-xs font-bold px-2 py-1 border-2 border-black shadow-[2px_2px_0_0_#000] ${i % 2 === 0 ? 'bg-accent' : 'bg-primary'}`}
-                  >
-                    {genre.name}
-                  </span>
-                ))}
-              </div>
-
-              <p className="text-sm font-bold text-black/70 line-clamp-2 leading-relaxed">
-                {anime.synopsis || "No description available"}
-              </p>
             </div>
           </div>
-        </Link>
 
-        <div className="mt-4">
-          <Link 
-            href={`/watch/${anime.mal_id}`}
-            className="neo-button inline-flex w-full items-center justify-center px-4 py-3 bg-primary hover:bg-yellow-300 text-black text-sm"
-          >
-            Watch Now
-          </Link>
+          {/* Content Container */}
+          <div className="p-5 flex-1 flex flex-col gap-3 relative z-10 -mt-6">
+            <h3 className="font-bold text-lg text-foreground line-clamp-2 leading-tight group-hover:text-primary transition-colors">
+              {anime.title}
+            </h3>
+
+            <div className="flex items-center gap-4 text-sm font-medium text-muted-foreground">
+              <div className="flex items-center gap-1.5 text-yellow-400">
+                <Star size={16} fill="currentColor" />
+                <span className="text-foreground">{anime.score?.toFixed(1) || "N/A"}</span>
+              </div>
+              <div className="flex items-center gap-1">
+                <span>{anime.episodes || "??"} Eps</span>
+              </div>
+              {anime.status && (
+                <div className={`text-xs px-2 py-0.5 rounded-full ${
+                  anime.status === "Finished Airing" ? "bg-green-500/20 text-green-400" : "bg-blue-500/20 text-blue-400"
+                }`}>
+                  {anime.status === "Finished Airing" ? "Completed" : anime.status}
+                </div>
+              )}
+            </div>
+
+            <div className="flex gap-2 flex-wrap mt-1">
+              {anime.genres?.slice(0, 3).map((genre) => (
+                <span
+                  key={genre.mal_id}
+                  className="text-[10px] font-semibold px-2 py-1 rounded-md bg-zinc-800 text-zinc-300 border border-zinc-700"
+                >
+                  {genre.name}
+                </span>
+              ))}
+            </div>
+
+            <p className="text-xs text-muted-foreground line-clamp-3 mt-2 leading-relaxed">
+              {anime.synopsis || "No description available"}
+            </p>
+          </div>
         </div>
-      </div>
+      </Link>
     </motion.div>
   );
 }

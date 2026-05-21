@@ -1,29 +1,28 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+@config "../../tailwind.config.ts";
 
 @layer base {
   :root {
-    --background: #fef08a; /* vibrant pale yellow (yellow-200) */
-    --foreground: #000000;
-    --card: #ffffff;
-    --card-foreground: #000000;
-    --popover: #ffffff;
-    --popover-foreground: #000000;
-    --primary: #fbbf24; /* amber-400 */
-    --primary-foreground: #000000;
-    --secondary: #22d3ee; /* cyan-400 */
-    --secondary-foreground: #000000;
-    --muted: #f1f5f9; /* slate-100 */
-    --muted-foreground: #475569; /* slate-600 */
-    --accent: #f472b6; /* pink-400 */
-    --accent-foreground: #000000;
-    --destructive: #ef4444; /* red-500 */
-    --destructive-foreground: #ffffff;
-    --border: #000000;
-    --input: #ffffff;
-    --ring: #000000;
-    --radius: 0.5rem;
+    --background: #09090b; /* zinc-950 */
+    --foreground: #fafafa; /* zinc-50 */
+    --card: #18181b; /* zinc-900 */
+    --card-foreground: #fafafa;
+    --popover: #18181b;
+    --popover-foreground: #fafafa;
+    --primary: #06b6d4; /* cyan-500 */
+    --primary-foreground: #09090b;
+    --secondary: #a855f7; /* purple-500 */
+    --secondary-foreground: #fafafa;
+    --muted: #27272a; /* zinc-800 */
+    --muted-foreground: #a1a1aa; /* zinc-400 */
+    --accent: #3b82f6; /* blue-500 */
+    --accent-foreground: #fafafa;
+    --destructive: #ef4444;
+    --destructive-foreground: #fafafa;
+    --border: #27272a; /* zinc-800 */
+    --input: #27272a;
+    --ring: #06b6d4;
+    --radius: 0.75rem;
   }
 }
 
@@ -36,87 +35,55 @@
     color: var(--foreground);
     -webkit-font-smoothing: antialiased;
     font-family: var(--font-geist-sans), system-ui, -apple-system, sans-serif;
-    /* Retro dot pattern background */
-    background-image: radial-gradient(#000000 1px, transparent 1px);
-    background-size: 20px 20px;
   }
   html {
     scroll-behavior: smooth;
+    color-scheme: dark;
   }
 }
 
 /* Typography Enhancements */
 h1, h2, h3, h4, h5, h6 {
-  font-weight: 900;
-  letter-spacing: -0.05em;
-  color: black;
+  font-weight: 800;
+  letter-spacing: -0.02em;
 }
 
 /* Scrollbar Styling */
 ::-webkit-scrollbar {
-  width: 12px;
-  height: 12px;
+  width: 10px;
+  height: 10px;
 }
 ::-webkit-scrollbar-track {
-  background: var(--background);
-  border-left: 4px solid black;
+  background: #09090b;
 }
 ::-webkit-scrollbar-thumb {
-  background: var(--primary);
-  border: 3px solid black;
+  background: #27272a;
+  border-radius: 5px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--accent);
+  background: #3f3f46;
 }
 
-/* Neo Brutalism Utilities */
+/* Glassmorphism & Modern Utilities */
 @layer utilities {
-  .neo-box {
-    border: 4px solid black;
-    border-radius: 0.75rem;
-    background-color: white;
-    box-shadow: 6px 6px 0px 0px rgba(0,0,0,1);
+  .glass-card {
+    background: rgba(24, 24, 27, 0.6);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
   }
   
-  .neo-card {
-    border: 4px solid black;
-    border-radius: 1rem;
-    background-color: white;
-    box-shadow: 8px 8px 0px 0px rgba(0,0,0,1);
-    transition-property: all;
-    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-    transition-duration: 200ms;
+  .glass-panel {
+    background: linear-gradient(135deg, rgba(6, 182, 212, 0.05), rgba(168, 85, 247, 0.05));
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
   }
 
-  .neo-card:hover {
-    transform: translate(-4px, -4px);
-    box-shadow: 12px 12px 0px 0px rgba(0,0,0,1);
-  }
-
-  .neo-button {
-    border: 4px solid black;
-    font-weight: 900;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    box-shadow: 4px 4px 0px 0px rgba(0,0,0,1);
-    transition-property: all;
-    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-    transition-duration: 150ms;
-  }
-  
-  .neo-button:active {
-    transform: translate(4px, 4px);
-    box-shadow: none;
-  }
-
-  .neo-badge {
-    border: 2px solid black;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    padding: 0.25rem 0.5rem;
-    font-size: 0.75rem;
-    line-height: 1rem;
-    box-shadow: 2px 2px 0px 0px rgba(0,0,0,1);
+  .text-gradient {
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-image: linear-gradient(to right, #06b6d4, #a855f7);
   }
 }
