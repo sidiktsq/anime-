@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { getAnimeById, getAnimeCharacters } from "@/services/animeService";
+import { getAnimeById, getAnimeCharacters, getLatestEpisodeCount } from "@/services/animeService";
 import { DetailPageSkeleton } from "@/components/ui/skeleton";
 import { Star, Calendar, Tv, Users, Clock, Film, ArrowLeft, Play, Heart, Share2, BookOpen } from "lucide-react";
 
@@ -25,8 +25,11 @@ async function AnimeDetail({ animeId }: { animeId: number }) {
     );
   }
 
+  // Fetch latest episode count if total episodes are unknown (ongoing anime)
+  const latestEpisodeCount = !anime.episodes ? await getLatestEpisodeCount(animeId) : 0;
+  const totalEpisodes = anime.episodes || latestEpisodeCount || 0;
+
   const coverUrl = anime.images?.jpg?.large_image_url || anime.images?.jpg?.image_url;
-  const totalEpisodes = anime.episodes || 0;
 
   // Generate episode list
   const episodes = Array.from({ length: totalEpisodes }, (_, i) => i + 1);

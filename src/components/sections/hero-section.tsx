@@ -94,7 +94,7 @@ export function HeroSection({ animeList }: HeroSectionProps) {
                 {currentAnime.type}
               </span>
               <span className="bg-white/10 text-white border border-white/20 px-3 py-1 rounded-full backdrop-blur-sm">
-                {currentAnime.episodes || "??"} Episodes
+                {currentAnime.episodes ? `${currentAnime.episodes} Episodes` : "Ongoing"}
               </span>
             </div>
 

@@ -212,6 +212,28 @@ export async function getAnimeById(id: number): Promise<Anime | null> {
 // without requiring OAuth token (like user lists) or they require scraping/different logic.
 // ============================================================================
 
+export async function getLatestEpisodeCount(id: number): Promise<number | null> {
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const result = await fetchWithCache<any>(`/anime/${id}/episodes`, undefined, false);
+    
+    if (result.pagination?.last_visible_page > 1) {
+       const lastPage = result.pagination.last_visible_page;
+       // eslint-disable-next-line @typescript-eslint/no-explicit-any
+       const lastPageResult = await fetchWithCache<any>(`/anime/${id}/episodes?page=${lastPage}`, undefined, false);
+       if (lastPageResult.data && lastPageResult.data.length > 0) {
+         return lastPageResult.data[lastPageResult.data.length - 1].mal_id;
+       }
+    } else if (result.data && result.data.length > 0) {
+       return result.data[result.data.length - 1].mal_id;
+    }
+    return null;
+  } catch (error) {
+    console.error(`Failed to fetch latest episode for ${id}:`, error);
+    return null;
+  }
+}
+
 export async function getAnimeCharacters(id: number) {
   try {
     const result = await fetchWithCache<{

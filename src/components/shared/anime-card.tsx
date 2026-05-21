@@ -71,7 +71,7 @@ export function AnimeCard({ anime }: AnimeCardProps) {
                 <span className="text-foreground">{anime.score?.toFixed(1) || "N/A"}</span>
               </div>
               <div className="flex items-center gap-1">
-                <span>{anime.episodes || "??"} Eps</span>
+                <span>{anime.episodes ? `${anime.episodes} Eps` : "Ongoing"}</span>
               </div>
               {anime.status && (
                 <div className={`text-xs px-2 py-0.5 rounded-full ${
