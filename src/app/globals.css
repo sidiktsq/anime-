@@ -1,26 +1,122 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
+@layer base {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #fef08a; /* vibrant pale yellow (yellow-200) */
+    --foreground: #000000;
+    --card: #ffffff;
+    --card-foreground: #000000;
+    --popover: #ffffff;
+    --popover-foreground: #000000;
+    --primary: #fbbf24; /* amber-400 */
+    --primary-foreground: #000000;
+    --secondary: #22d3ee; /* cyan-400 */
+    --secondary-foreground: #000000;
+    --muted: #f1f5f9; /* slate-100 */
+    --muted-foreground: #475569; /* slate-600 */
+    --accent: #f472b6; /* pink-400 */
+    --accent-foreground: #000000;
+    --destructive: #ef4444; /* red-500 */
+    --destructive-foreground: #ffffff;
+    --border: #000000;
+    --input: #ffffff;
+    --ring: #000000;
+    --radius: 0.5rem;
   }
 }
 
-body {
+@layer base {
+  * {
+    border-color: var(--border);
+  }
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    -webkit-font-smoothing: antialiased;
+    font-family: var(--font-geist-sans), system-ui, -apple-system, sans-serif;
+    /* Retro dot pattern background */
+    background-image: radial-gradient(#000000 1px, transparent 1px);
+    background-size: 20px 20px;
+  }
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/* Typography Enhancements */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 900;
+  letter-spacing: -0.05em;
+  color: black;
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+::-webkit-scrollbar-track {
   background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  border-left: 4px solid black;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--primary);
+  border: 3px solid black;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent);
+}
+
+/* Neo Brutalism Utilities */
+@layer utilities {
+  .neo-box {
+    border: 4px solid black;
+    border-radius: 0.75rem;
+    background-color: white;
+    box-shadow: 6px 6px 0px 0px rgba(0,0,0,1);
+  }
+  
+  .neo-card {
+    border: 4px solid black;
+    border-radius: 1rem;
+    background-color: white;
+    box-shadow: 8px 8px 0px 0px rgba(0,0,0,1);
+    transition-property: all;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 200ms;
+  }
+
+  .neo-card:hover {
+    transform: translate(-4px, -4px);
+    box-shadow: 12px 12px 0px 0px rgba(0,0,0,1);
+  }
+
+  .neo-button {
+    border: 4px solid black;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    box-shadow: 4px 4px 0px 0px rgba(0,0,0,1);
+    transition-property: all;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+  }
+  
+  .neo-button:active {
+    transform: translate(4px, 4px);
+    box-shadow: none;
+  }
+
+  .neo-badge {
+    border: 2px solid black;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+    line-height: 1rem;
+    box-shadow: 2px 2px 0px 0px rgba(0,0,0,1);
+  }
 }

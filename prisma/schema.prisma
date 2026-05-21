@@ -1,0 +1,100 @@
+// This is your Prisma schema file for AnimeHub
+// Database: SQLite (Development) / PostgreSQL (Production)
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+// User Account
+model User {
+  id        String     @id @default(cuid())
+  email     String     @unique
+  name      String?
+  image     String?
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+
+  bookmarks     AnimeBookmark[]
+  watchHistory  WatchHistory[]
+  comments      Comment[]
+  
+  @@index([email])
+}
+
+// Anime Bookmark (Favorit)
+model AnimeBookmark {
+  id        String   @id @default(cuid())
+  userId    String
+  animeId   Int      @unique
+  animeData AnimeData @relation(fields: [animeId], references: [jikanId], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, animeId])
+  @@index([userId])
+  @@index([animeId])
+}
+
+// Watch History
+model WatchHistory {
+  id        String   @id @default(cuid())
+  userId    String
+  animeId   Int
+  episodeNumber Int?
+  watchedAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, animeId])
+  @@index([userId])
+  @@index([animeId])
+}
+
+// Anime Comments/Reviews
+model Comment {
+  id        String   @id @default(cuid())
+  userId    String
+  animeId   Int
+  content   String   // Long text content
+  rating    Int?     // 1-10 rating
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([animeId])
+}
+
+// Cached Anime Data from Jikan API
+model AnimeData {
+  id        String     @id @default(cuid())
+  jikanId   Int        @unique // ID dari Jikan API
+  title     String
+  synopsis  String?    // Long text synopsis
+  coverUrl  String?
+  rating    Float?
+  episodes  Int?
+  year      Int?
+  season    String?
+  status    String?
+  type      String? // TV, Movie, etc
+  source    String?
+  studios   String? // JSON array
+  genres    String? // JSON array
+  trailer   String?
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+
+  bookmarks AnimeBookmark[]
+
+  @@index([jikanId])
+  @@index([title])
+  @@index([rating])
+}
